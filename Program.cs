@@ -33,8 +33,8 @@ var tokenDescriptor = new SecurityTokenDescriptor
 {
     Subject = new ClaimsIdentity(new[]
     {
-            new Claim("iss", config.GetValue<string>("ClientId")!),
-            new Claim("sub", config.GetValue<string>("Subject")!),
+            new Claim("iss", config.GetValue<string>("ClientId")),
+            new Claim("sub", config.GetValue<string>("Subject")),
             new Claim("aud", tokenUrl),
             new Claim("exp", DateTimeOffset.UtcNow.AddMinutes(5).ToUnixTimeSeconds().ToString())
         }),
