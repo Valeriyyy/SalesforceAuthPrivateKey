@@ -11,6 +11,8 @@ var config = new ConfigurationBuilder()
     .Build();
 
 // Salesforce OAuth token endpoint
+// Sandboxes use https://test.salesforce.com
+// Production and Dev orgs use https://login.salesforce.com
 string tokenUrl = "https://login.salesforce.com";
 
 // Salesforce Connected App credentials
@@ -44,8 +46,6 @@ var jwt = tokenHandler.WriteToken(token);
 
 var sfAuthClient = new HttpClient
 {
-    // Sandboxes use https://test.salesforce.com
-    // Production and Dev orgs use https://login.salesforce.com
     BaseAddress = new Uri(tokenUrl)
 };
 var content = new FormUrlEncodedContent(new Dictionary<string, string>
@@ -56,6 +56,8 @@ var content = new FormUrlEncodedContent(new Dictionary<string, string>
 var response = await sfAuthClient.PostAsync("/services/oauth2/token", content);
 var responseContent = response.Content.ReadAsStringAsync().Result;
 var authToken = JsonSerializer.Deserialize<SFAuthToken>(responseContent);
+
+
 Console.WriteLine("AccessToken:" + authToken.AccessToken);
 Console.WriteLine("Scope:" + authToken.Scope);
 Console.WriteLine("InstanceUrl:" + authToken.InstanceUrl);
