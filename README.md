@@ -9,6 +9,8 @@ The purpose of this project is to show how you can retrieve a working salesforce
 
 This code uses the server.key file that is generated from when you generate a Self-Signed Certificate for use with a Salesforce Connected App. Since the server.key file is related to the certificate that you uploaded to Salesforce, you are able to use it to generate a JWT token and have Salesforce provide you with its own valid api token.
 
+Update: I updated the project to compile to aot and use source generators for deserializing the json response. Why? Cause I wanted to.
+
 # Setup
 
 Before you get started this project assumes that you have already created a connected app and added
