@@ -1,9 +1,10 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using SalessforceAuthPrivatekey;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text.Json;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 
 var config = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
@@ -29,23 +30,21 @@ var signingCredentials = new SigningCredentials(new RsaSecurityKey(rsa), Securit
 
 // Create JWT token
 var tokenHandler = new JwtSecurityTokenHandler();
-var tokenDescriptor = new SecurityTokenDescriptor
-{
-    Subject = new ClaimsIdentity(new[]
-    {
-            new Claim("iss", config.GetValue<string>("ClientId")),
-            new Claim("sub", config.GetValue<string>("Subject")),
-            new Claim("aud", tokenUrl),
-            new Claim("exp", DateTimeOffset.UtcNow.AddMinutes(5).ToUnixTimeSeconds().ToString())
-        }),
+var tokenDescriptor = new SecurityTokenDescriptor {
+    Subject = new ClaimsIdentity(
+    [
+        new Claim("iss", config.GetValue<string>("ClientId")),
+        new Claim("sub", config.GetValue<string>("Subject")),
+        new Claim("aud", tokenUrl),
+        new Claim("exp", DateTimeOffset.UtcNow.AddMinutes(5).ToUnixTimeSeconds().ToString())
+    ]),
     SigningCredentials = signingCredentials
 };
 
 var token = tokenHandler.CreateJwtSecurityToken(tokenDescriptor);
 var jwt = tokenHandler.WriteToken(token);
 
-var sfAuthClient = new HttpClient
-{
+var sfAuthClient = new HttpClient {
     BaseAddress = new Uri(tokenUrl)
 };
 var content = new FormUrlEncodedContent(new Dictionary<string, string>

@@ -1,6 +1,9 @@
 using System.Text.Json.Serialization;
-public record SFAuthToken
-{
+
+namespace SalessforceAuthPrivatekey;
+
+[JsonSerializable(typeof(string))]
+public partial class SFAuthToken : JsonSerializerContext {
     [JsonPropertyName("access_token")]
     public string AccessToken { get; set; }
     [JsonPropertyName("scope")]
