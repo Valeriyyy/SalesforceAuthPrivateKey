@@ -56,9 +56,9 @@ var response = await sfAuthClient.PostAsync("/services/oauth2/token", content);
 var responseContent = response.Content.ReadAsStringAsync().Result;
 var authToken = JsonSerializer.Deserialize<SFAuthToken>(responseContent);
 
-
-Console.WriteLine("AccessToken:" + authToken.AccessToken);
-Console.WriteLine("Scope:" + authToken.Scope);
-Console.WriteLine("InstanceUrl:" + authToken.InstanceUrl);
-Console.WriteLine("Id:" + authToken.Id);
-Console.WriteLine("TokenType:" + authToken.TokenType);
+Console.WriteLine("status code: " + response.IsSuccessStatusCode);
+Console.WriteLine("AccessToken: " + authToken.AccessToken);
+Console.WriteLine("Scope: " + authToken.Scope);
+Console.WriteLine("InstanceUrl: " + authToken.InstanceUrl);
+Console.WriteLine("Id: " + authToken.Id);
+Console.WriteLine("TokenType: " + authToken.TokenType);
